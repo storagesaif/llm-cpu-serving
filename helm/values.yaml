@@ -69,4 +69,5 @@ resources:
       cpu: "8"
       memory: "8Gi"
 
-storageClassName: gp3-csi
+storageClassName: ocs-storagecluster-cephfs
+
