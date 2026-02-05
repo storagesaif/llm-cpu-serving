@@ -109,7 +109,7 @@ helm install ${PROJECT} helm/ --namespace ${PROJECT}
 If you want the application to be managed via GitOps from the start, use the bootstrap script:
 
 ```bash
-./scripts/bootstrap-gitops.sh
+./install.sh
 ```
 
 Alternatively, you can manually enable GitOps during Helm installation:
