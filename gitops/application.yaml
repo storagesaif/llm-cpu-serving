@@ -7,7 +7,7 @@ spec:
   project: hr-assistant-project
   source:
     repoURL: https://github.com/storagesaif/llm-cpu-serving.git
-    targetRevision: HEAD
+    targetRevision: main
     path: helm
     helm:
       valueFiles:
@@ -21,3 +21,18 @@ spec:
       selfHeal: true
     syncOptions:
     - CreateNamespace=true
+  ignoreDifferences:
+  - group: kubeflow.org
+    kind: Notebook
+    jsonPointers:
+    - /metadata/annotations/notebooks.opendatahub.io~1last-image-selection
+    - /metadata/annotations/notebooks.opendatahub.io~1last-size-selection
+    - /metadata/finalizers
+    - /spec/template/spec/containers/0/volumeMounts
+    - /spec/template/spec/containers/1
+    - /spec/template/spec/containers/2/volumeMounts
+    - /spec/template/spec/volumes
+  - group: serving.kserve.io
+    kind: InferenceService
+    jsonPointers:
+    - /metadata/annotations/serving.kserve.io~1deploymentMode
