@@ -71,3 +71,9 @@ resources:
 
 storageClassName: ocs-storagecluster-cephfs
 
+pvc:
+  size: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+

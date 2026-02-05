@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: hr-assistant-project
+  namespace: openshift-gitops
+spec:
+  description: Project for HR Assistant application
+  sourceRepos:
+  - '*'
+  destinations:
+  - namespace: hr-assistant
+    server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'

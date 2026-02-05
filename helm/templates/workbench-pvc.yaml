@@ -12,9 +12,9 @@ metadata:
     opendatahub.io/dashboard: 'true'
 spec:
   accessModes:
-    - ReadWriteOnce
+    {{- toYaml .Values.pvc.accessModes | nindent 4 }}
   resources:
     requests:
-      storage: 5Gi
+      storage: {{ .Values.pvc.size }}
   storageClassName: {{ .Values.storageClassName }}
-  volumeMode: Filesystem
+  volumeMode: {{ .Values.pvc.volumeMode }}
