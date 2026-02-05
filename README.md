@@ -100,9 +100,24 @@ oc new-project ${PROJECT}
 
 ### Install with Helm
 
+```bash
+helm install ${PROJECT} helm/ --namespace ${PROJECT} 
 ```
-helm install ${PROJECT} helm/ --namespace  ${PROJECT} 
+
+### (Alternative) Install with GitOps (ArgoCD)
+
+If you want the application to be managed via GitOps from the start, use the bootstrap script:
+
+```bash
+./scripts/bootstrap-gitops.sh
 ```
+
+Alternatively, you can manually enable GitOps during Helm installation:
+1. Update `gitops.repoURL` in `helm/values.yaml` to point to your fork.
+2. Run:
+   ```bash
+   helm install ${PROJECT} helm/ --namespace ${PROJECT} --set gitops.enabled=true
+   ```
 
 ### Wait for pods
 

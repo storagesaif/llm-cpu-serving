@@ -1,0 +1,57 @@
+{{- if .Values.gitops.enabled }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: {{ .Release.Name }}-project
+  namespace: {{ .Values.gitops.namespace }}
+spec:
+  description: Project for {{ .Release.Name }} application
+  sourceRepos:
+  - '*'
+  destinations:
+  - namespace: {{ .Release.Namespace }}
+    server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Values.gitops.namespace }}
+spec:
+  project: {{ .Release.Name }}-project
+  source:
+    repoURL: {{ .Values.gitops.repoURL }}
+    targetRevision: {{ .Values.gitops.targetRevision }}
+    path: helm
+    helm:
+      valueFiles:
+      - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ .Release.Namespace }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+  ignoreDifferences:
+  - group: kubeflow.org
+    kind: Notebook
+    jqPathExpressions:
+    - .spec.template.spec.containers[].volumeMounts
+    - .spec.template.spec.volumes
+    jsonPointers:
+    - /metadata/annotations/notebooks.opendatahub.io~1last-image-selection
+    - /metadata/annotations/notebooks.opendatahub.io~1last-size-selection
+    - /metadata/finalizers
+    - /spec/template/spec/containers/1
+  - group: serving.kserve.io
+    kind: InferenceService
+    jsonPointers:
+    - /metadata/annotations/serving.kserve.io~1deploymentMode
+{{- end }}

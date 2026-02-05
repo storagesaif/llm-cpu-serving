@@ -77,3 +77,9 @@ pvc:
     - ReadWriteOnce
   volumeMode: Filesystem
 
+gitops:
+  enabled: false
+  repoURL: https://github.com/storagesaif/llm-cpu-serving.git
+  targetRevision: main
+  namespace: openshift-gitops
+
