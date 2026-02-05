@@ -24,14 +24,14 @@ spec:
   ignoreDifferences:
   - group: kubeflow.org
     kind: Notebook
+    jqPathExpressions:
+    - .spec.template.spec.containers[].volumeMounts
+    - .spec.template.spec.volumes
     jsonPointers:
     - /metadata/annotations/notebooks.opendatahub.io~1last-image-selection
     - /metadata/annotations/notebooks.opendatahub.io~1last-size-selection
     - /metadata/finalizers
-    - /spec/template/spec/containers/0/volumeMounts
     - /spec/template/spec/containers/1
-    - /spec/template/spec/containers/2/volumeMounts
-    - /spec/template/spec/volumes
   - group: serving.kserve.io
     kind: InferenceService
     jsonPointers:
