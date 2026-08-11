@@ -3,18 +3,17 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   annotations:
+    helm.sh/resource-policy: keep
     openshift.io/description: ''
     openshift.io/display-name: AnythingLLM
   name: anythingllm
-  finalizers:
-    - kubernetes.io/pvc-protection
   labels:
     opendatahub.io/dashboard: 'true'
 spec:
   accessModes:
-    {{- toYaml .Values.pvc.accessModes | nindent 4 }}
+    - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.pvc.size }}
+      storage: 5Gi
   storageClassName: {{ .Values.storageClassName }}
-  volumeMode: {{ .Values.pvc.volumeMode }}
+  volumeMode: Filesystem
