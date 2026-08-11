@@ -160,6 +160,8 @@ spec:
         - name: anythingllm-automation
           image: keinos/sqlite3:latest
           command: ["/bin/sh", "-c"]
+          securityContext:
+            runAsUser: 1001
           resources:
             limits:
               cpu: 100m
