@@ -27,7 +27,7 @@ spec:
     spec:
       affinity: {}
       securityContext:
-        fsGroup: 0
+        fsGroup: 1001
       containers:
         - resources:
             limits:
