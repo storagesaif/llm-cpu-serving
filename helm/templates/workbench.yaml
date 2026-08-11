@@ -26,6 +26,8 @@ spec:
   template:
     spec:
       affinity: {}
+      securityContext:
+        fsGroup: 0
       containers:
         - resources:
             limits:
