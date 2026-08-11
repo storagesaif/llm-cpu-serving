@@ -72,11 +72,11 @@ rag:
     - filename: strong-compliance-culture.txt
       url: https://crosscheckcompliance.com/resources/articles/strong-compliance-culture/
     - filename: understanding-employment-laws.txt
-      url: https://www.sunflowerbank.com/about-us/resource-articles/understanding-employment-laws/
+      url: https://www.dol.gov/general/topic/wages/minimumwage
     - filename: anti-harassment-training-guide.txt
       url: https://compliancy-group.com/anti-harassment-training-guide/
     - filename: hr-compliance-financial-services.txt
-      url: https://www.metricstream.com/learn/hr-compliance.html
+      url: https://www.eeoc.gov/employers
 
 pvc:
   size: 5Gi
