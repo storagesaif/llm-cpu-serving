@@ -1,162 +1,243 @@
-cd /Users/saifadil/llm-cpu-serving
-
-cat > helm/values.yaml << 'EOF'
-# OCP username of the person deploying this chart (oc whoami).
-# Used to set the workbench owner annotation so the RHOAI dashboard generates the correct link.
-username: ""
-
-images:
-  vllmRuntime: "registry.redhat.io/rhaii/vllm-cpu-rhel9@sha256:cf6577f6d526561651df5390aad916c53820a18a1659e3fb39c1c5a62aef0e3c"
-  llamaStack: "registry.redhat.io/rhoai/odh-llama-stack-core-rhel9@sha256:d0375eb3cb815b9e750efaee4809715b3ebf64a126ca179dc3da8b9b1f36443a"
-  anythingllm: "quay.io/rh-aiservices-bu/anythingllm-workbench:1.9.1"
-
-model:
-  storageUri: "oci://quay.io/rh-aiservices-bu/tinyllama:1.0"
-  name: "tinyllama"
-  maxModelLen: 2048
-  maxOutputTokens: 512
-
-resources:
-  inference:
-    requests:
-      cpu: "4"
-      memory: "8Gi"
-    limits:
-      cpu: "8"
-      memory: "16Gi"
-
-# Storage class for the AnythingLLM workbench PVC.
-# IBM Cloud ROKS with ODF: ocs-storagecluster-cephfs
-# AWS ROSA / self-managed: gp3-csi
-# Leave empty ("") to use the cluster default.
-storageClassName: "ocs-storagecluster-cephfs"
-
-pvc:
-  size: 5Gi
-  accessModes:
-    - ReadWriteOnce
-  volumeMode: Filesystem
-
-aiLifecoach:
-  workspace:
-    name: "Assistant to the HR Representative"
-    systemPrompt: |
-      You are an assistant to an HR representative in a large U.S. bank (financial services institution).
-      Your role is to help HR professionals handle people-related issues in a highly regulated environment,
-      balancing employee experience with strict conduct, risk, and compliance requirements.
-
-      Domain context:
-      - You operate in U.S. financial services, where regulators (e.g., OCC, Federal Reserve, FDIC, CFPB, SEC, FINRA)
-        and internal compliance functions place strong emphasis on culture, conduct risk, and documentation.
-      - Employees may be subject to background checks, licensing/registration (e.g., FINRA), personal trading rules,
-        confidentiality, and strict codes of conduct.
-
-      Key areas of expertise:
-      - Employee relations and conduct issues in a regulated banking environment
-      - HR's role in fostering a strong compliance and risk culture
-      - Performance management, underperformance, and documentation for regulated roles
-      - Hiring and onboarding in banking (background checks, FCRA, I-9, BSA/AML-sensitive roles)
-      - Workplace behavior: bullying, harassment, discrimination, retaliation, and "speak-up" culture
-      - Leave, working time, and attendance issues, with attention to fairness and consistency
-      - Whistleblowing, investigations, and when to involve Legal, Compliance, or Audit
-      - Training, certifications, and fitness/appropriateness for sensitive roles
-      - Change management, restructuring, and communication in financial institutions
-
-      Always provide:
-      - Clear, practical next steps for the HR representative (including who to loop in: Legal, Compliance, Risk, ER)
-      - Options with pros and cons, highlighting compliance, conduct, and reputational risk
-      - Recommendations that are fair, consistent, non-discriminatory, and well-documented
-      - Reminders about:
-        - Confidentiality and need-to-know access
-        - Maintaining accurate HR records and investigation notes
-        - Escalating potential regulatory, legal, or ethics issues promptly
-
-      Style:
-      - Be concise but comprehensive.
-      - Use bullet points when helpful.
-      - Ask clarifying questions when needed to give context-aware guidance (e.g., state, union status, role type).
-      - Do NOT provide definitive legal advice. Instead, flag legal and regulatory risk and recommend consulting:
-        - Internal Legal, Compliance, or Employee Relations teams
-        - External counsel where appropriate.
-      - When regulations could differ by state or regulator, explicitly call out that local rules may vary.
-
-rag:
-  seedDocuments:
-    - filename: strong-compliance-culture.txt
-      url: https://crosscheckcompliance.com/resources/articles/strong-compliance-culture/
-    - filename: understanding-employment-laws.txt
-      url: https://www.sunflowerbank.com/about-us/resource-articles/understanding-employment-laws/
-    - filename: anti-harassment-training-guide.txt
-      url: https://compliancy-group.com/anti-harassment-training-guide/
-    - filename: hr-compliance-financial-services.txt
-      url: https://www.metricstream.com/learn/hr-compliance.html
-EOF
-
-cat > README.md << 'EOF'
 # Serve a lightweight HR assistant
 
 ![chat-example.png](docs/images/chat-example.png)
 
-Replace hours spent searching policy documents with higher-value relational work.
+Replace hours spent searching policy documents with higher-value relational work. 
 
-## Detailed description
+## Detailed description 
 
 The *Assistant to the HR Representative* is a lightweight quickstart designed to
-give HR Representatives in Financial Services a trusted sounding board for discussions and decisions.
-Chat with this assistant for quick insights and actionable advice.
+give HR Representatives in Financial Services a trusted sounding board for discussions and decisions. 
+Chat with this assistant for quick insights and actionable advice. 
 
-This quickstart was designed for environments where GPUs are not available or necessary, making it
-ideal for lightweight inference use cases, prototyping, or constrained environments. By making the
-most of vLLM on CPU-based infrastructure, this Assistant can be deployed to almost any OpenShift AI
-environment.
+This quickstart was designed for environments where GPUs are not available or
+necessary, making it ideal for lightweight inference use cases, prototyping, or
+constrained environments. By making the most of vLLM on CPU-based
+infrastructure, this Assistant to the HR Representative can be deployed to almost any OpenShift AI
+environment. 
 
 This quickstart includes a Helm chart for deploying:
 
 - An OpenShift AI Project.
 - vLLM with CPU support running an instance of TinyLlama.
-- A LlamaStack RAG pipeline seeded with HR compliance documents.
-- AnythingLLM, a versatile chat interface, running as a workbench connected to vLLM.
+- AnythingLLM, a versatile chat interface, running as a workbench and connected
+  to the vLLM.
+  
+Use this project to quickly spin up a minimal vLLM instance and start serving
+models like TinyLlama on CPU—no GPU required. 🚀
 
----
 
-## Architecture diagrams
+<!-- ### See it in action
 
-![architecture.png](docs/images/architecture.png)
+Red Hat uses Arcade software to create interactive demos. Check out 
+[Quickstart with TinyLlama on CPU](https://interact.redhat.com/share/zsT3j9cgPt9yyPchb7EJ)
+ to see it in action. -->
 
----
 
-## Requirements
+### Architecture diagrams
 
-### Minimum hardware requirements
+![Architecture showcasing how both the playground an AnythingLLM uses the model hosted with vLLM CPU](docs/images/architecture.png)
+
+
+## Requirements 
+
+
+### Minimum hardware requirements 
 
 - No GPU needed! 🤖
-- 4 cores
-- 8 Gi memory
-- Storage: 5Gi
+- 4 cores 
+- 8 Gi memory 
+- Storage: 5Gi 
 
-### Recommended hardware requirements
+### Recommended hardware requirements 
 
 - No GPU needed! 🤖
-- 8 cores
-- 16 Gi memory
+- 32 cores 
+- 64 Gi 
 - Storage: 5Gi
 
-> **Note:** This version is compiled for Intel CPUs (preferably with AVX-512 enabled).
-> Example AWS instance: [m6i.4xlarge](https://instances.vantage.sh/aws/ec2/m6i.4xlarge)
+Adjust the value of CPU and memory in `helm/values.yaml` as desired.
 
----
+Note: This version is compiled for Intel CPU's (preferably with AVX512 enabled to be able to run compressed models as well, but optional).  
+Here's an example machine from AWS that works well: [https://instances.vantage.sh/aws/ec2/m6i.4xlarge](https://instances.vantage.sh/aws/ec2/m6i.4xlarge)
+
+### Minimum software requirements
+
+- Red Hat OpenShift 4.16.24 or later
+- Red Hat OpenShift AI 3.4.0 or later
+- Dependencies for Single-model server:
+    - Red Hat OpenShift Service Mesh
+    - Red Hat OpenShift Serverless
+
+### Required user permissions
+
+- Standard user. No elevated cluster permissions required.
+
+
 
 ## Prerequisites — Install these BEFORE deploying
 
 > ⚠️ All four steps below must be completed before running `helm install`.
-> The Helm chart creates resources that depend on all of them.
 
 ### 1. Red Hat OpenShift Serverless
-
-Required by KServe (model serving).
-Install from OperatorHub → search **"OpenShift Serverless"** → install to all namespaces.
-
-Wait for:
+Required by KServe. Install from OperatorHub → **OpenShift Serverless** → all namespaces.
 ```bash
-oc get csv -A | grep serverless        # must show: Succeeded
-oc get knativeserving -n knative-serving   # READY = True
+oc get csv -A | grep serverless
+oc get knativeserving -n knative-serving
+```
+
+### 2. Red Hat OpenShift Service Mesh 3
+Required by KServe networking. Install from OperatorHub → **OpenShift Service Mesh** → all namespaces.
+```bash
+oc get csv -A | grep servicemesh
+```
+
+### 3. Red Hat OpenShift AI (RHOAI)
+**IBM Cloud ROKS:** IBM Cloud console → Cluster → Add-ons → OpenShift AI → Enable.
+**Self-managed / ROSA:** OperatorHub → **Red Hat OpenShift AI**.
+```bash
+oc get datasciencecluster default-dsc
+oc get pods -n redhat-ods-applications
+```
+
+### 4. Enable LlamaStack in RHOAI ⚠️
+LlamaStack is installed by RHOAI but **disabled by default**. Enable it:
+```bash
+oc patch datasciencecluster default-dsc --type=merge -p "{"spec":{"components":{"llamastackoperator":{"managementState":"Managed"}}}}"
+watch -n 5 "oc get crd | grep llamastack"
+```
+
+### Verify all required CRDs
+```bash
+for crd in llamastackdistributions.llamastack.io inferenceservices.serving.kserve.io servingruntimes.serving.kserve.io notebooks.kubeflow.org; do
+  oc get crd $crd &>/dev/null && echo "✅ $crd" || echo "❌ MISSING: $crd"
+done
+```
+
+### Grant SCC permissions
+```bash
+oc adm policy add-scc-to-user anyuid -z default -n hr-assistant
+oc adm policy add-scc-to-user anyuid -z anythingllm -n hr-assistant
+```
+
+---
+
+## Deploy
+
+Follow the below steps to deploy and test the HR assistant.
+
+This example was tested on Red Hat OpenShift 4.21.8 & Red Hat OpenShift AI v3.4.0.
+
+### Clone
+
+```
+git clone https://github.com/rh-ai-quickstart/llm-cpu-serving.git && \
+    cd llm-cpu-serving/  
+```
+
+### (Optional) Update storage class name
+
+If needed, update storage class name in `helm/values.yaml`.
+```
+storageClassName: gp3-csi
+```
+
+### (Optional) Configure LD_PRELOAD
+
+The default LD_PRELOAD for this image is setting an unsupported memory
+allocator jemalloc. So setting this LD_PRELOAD to libomp overrides that
+setting. jemalloc is set for pyarrow compatibility, if you require pyarrow
+usage in this image jemalloc should be set in LD_PRELOAD alongside libomp
+but vLLM will have degraded performance.
+
+If needed, configure the LD_PRELOAD variable in `helm/templates/servingruntime.yaml`
+```
+env:
+  - name: LD_PRELOAD
+    value: "/usr/lib64/libomp.so"
+```
+
+### Create the project
+
+```bash
+PROJECT="hr-assistant"
+
+oc new-project ${PROJECT}
+``` 
+
+### Install with Helm
+
+```
+helm install ${PROJECT} helm/ --namespace  ${PROJECT} 
+```
+
+### Wait for pods
+
+```
+oc -n ${PROJECT}  get pods -w
+```
+
+```
+(Output)
+NAME                                         READY   STATUS    RESTARTS   AGE
+anythingllm-0                                 3/3     Running     0          76s
+anythingllm-seed-lchf6                        0/1     Completed   0          76s
+tinyllama-1b-cpu-predictor-544bdf75f9-x9fwh   2/2     Running     0          75s
+```
+
+## Chat with the model
+
+From the OpenShift Console, go to the App Switcher / Waffle in the upper right and go to the Red Hat OpenShift AI Dashboard.
+
+After that you have two choices, to chat with the model through the RHOAI playground or to chat with it through the AnythingLLM UI (deployed as a workbench).
+
+### Chat through RHOAI Playground
+
+> ⚠️ Note: This only works if you have the Early Access feature "Playground" enabled.
+
+Once inside the dashboard, navigate to Gen AI studio -> Playground -> Project tinyllama-cpu-demo (or what you called your ${PROJECT} if you changed from default).
+
+Click on the Knowledge tab and enable RAG, then you can start chatting with your documents.  
+You can also customize the prompt in the Prompt tab, if you want to copy what is used in the values.yaml file for AnythingLLM.
+
+Try for example asking it:
+```
+Hi, one of our employees is going to get a raise, what do I need to keep in mind for this?
+```
+It will provide you a reply and some citations related to the question.
+
+![An example of asking a question to the playground with RAG enabled so it answers based on the documents](docs/images/playground-rag.png)
+
+### Chat through AnythingLLM
+
+
+Once inside the dashboard, navigate to Data Science Projects -> tinyllama-cpu-demo (or what you called your ${PROJECT} if you changed from default).
+
+![Shows the OpenShift AI projects view](docs/images/rhoai-1.png)
+
+Inside the project you can see Workbenches, open up the one for AnythingLLM.
+
+![How AnythingLLM looks like when you just open it up](docs/images/rhoai-2.png)
+
+Finally, click on the **Assistant to the HR Representative** Workspace that's pre-created for you and you can start chatting with your Assistant to the HR Representative! :)  
+Try for example asking it:
+```
+Hi, one of our employees is going to get a raise, what do I need to keep in mind for this?
+```
+It will provide you a reply and some citations related to the question.
+
+![An example of asking a question in AnythingLLM and getting an answer based on some documents](docs/images/anythingllm-1.png)
+
+
+
+### Delete
+```
+helm uninstall ${PROJECT} --namespace ${PROJECT} 
+```
+
+
+## Tags
+
+* **Industry:** Banking and securities
+* **Product:** OpenShift AI 
+* **Use case:** Productivity
