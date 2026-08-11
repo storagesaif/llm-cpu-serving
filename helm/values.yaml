@@ -1,6 +1,6 @@
 # OCP username of the person deploying this chart (oc whoami).
 # Used to set the workbench owner annotation so the RHOAI dashboard generates the correct link.
-username: ""
+username: "IAM#saif.adil@ibm.com"
 
 images:
   vllmRuntime: "registry.redhat.io/rhaii/vllm-cpu-rhel9@sha256:cf6577f6d526561651df5390aad916c53820a18a1659e3fb39c1c5a62aef0e3c"
@@ -69,11 +69,14 @@ aiLifecoach:
 
 rag:
   seedDocuments:
+    - filename: strong-compliance-culture.txt
       url: https://crosscheckcompliance.com/resources/articles/strong-compliance-culture/
     - filename: understanding-employment-laws.txt
-      url: https://online.law.pitt.edu/blog/understanding-employment-laws
+      url: https://www.sunflowerbank.com/about-us/resource-articles/understanding-employment-laws/
     - filename: anti-harassment-training-guide.txt
-      url: https://hsi.com/solutions/employee-training-and-development/anti-harassment-training-programs
+      url: https://compliancy-group.com/anti-harassment-training-guide/
+    - filename: hr-compliance-financial-services.txt
+      url: https://www.metricstream.com/learn/hr-compliance.html
 
 pvc:
   size: 5Gi
