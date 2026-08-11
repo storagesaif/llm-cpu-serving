@@ -16,11 +16,11 @@ model:
 resources:
   inference:
     requests:
-      cpu: "2"
-      memory: "4Gi"
+      cpu: "4"
+      memory: "8Gi"
     limits:
       cpu: "8"
-      memory: "4Gi"
+      memory: "16Gi"
 
 storageClassName: ocs-storagecluster-cephfs
 
@@ -69,9 +69,6 @@ aiLifecoach:
 
 rag:
   seedDocuments:
-    - filename: hr-compliance-strategies.txt
-      url: https://www.goco.io/blog/key-hr-compliance-strategies-for-financial-services
-    - filename: strong-compliance-culture.txt
       url: https://crosscheckcompliance.com/resources/articles/strong-compliance-culture/
     - filename: understanding-employment-laws.txt
       url: https://online.law.pitt.edu/blog/understanding-employment-laws
