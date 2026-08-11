@@ -5,7 +5,7 @@ username: "IAM#saif.adil@ibm.com"
 images:
   vllmRuntime: "registry.redhat.io/rhaii/vllm-cpu-rhel9@sha256:cf6577f6d526561651df5390aad916c53820a18a1659e3fb39c1c5a62aef0e3c"
   llamaStack: "registry.redhat.io/rhoai/odh-llama-stack-core-rhel9@sha256:d0375eb3cb815b9e750efaee4809715b3ebf64a126ca179dc3da8b9b1f36443a"
-  anythingllm: "quay.io/rh-aiservices-bu/anythingllm-workbench:1.9.1"
+  anythingllm: "quay.io/rh-aiservices-bu/anythingllm-workbench:1.8.5"
 
 model:
   storageUri: "oci://quay.io/rh-aiservices-bu/tinyllama:1.0"
