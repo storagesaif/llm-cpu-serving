@@ -72,11 +72,11 @@ rag:
     - filename: strong-compliance-culture.txt
       url: https://crosscheckcompliance.com/resources/articles/strong-compliance-culture/
     - filename: understanding-employment-laws.txt
-      url: https://www.dol.gov/agencies/whd/fmla
+      url: https://www.eeoc.gov/laws/guidance/questions-and-answers-clarify-and-provide-common-interpretation-uniform-guidelines
     - filename: anti-harassment-training-guide.txt
       url: https://compliancy-group.com/anti-harassment-training-guide/
     - filename: hr-compliance-financial-services.txt
-      url: https://www.eeoc.gov/employers
+      url: https://www.eeoc.gov/harassment
 
 pvc:
   size: 5Gi
