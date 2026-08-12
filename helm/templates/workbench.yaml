@@ -14,7 +14,7 @@ metadata:
     opendatahub.io/accelerator-name: ''
     openshift.io/description: ''
     openshift.io/display-name: AnythingLLM
-    notebooks.opendatahub.io/last-image-selection: 'anythingllm-workbench:{{ .Values.images.anythingllm | splitList ":" | last }}'
+    - name: "1.8.5"
     notebooks.opendatahub.io/last-size-selection: Small
     opendatahub.io/username: quickstart@redhat.com
   name: anythingllm
@@ -267,7 +267,7 @@ spec:
   lookupPolicy:
     local: true
   tags:
-    - name: "{{ .Values.images.anythingllm | splitList \":\" | last }}"
+    - name: "1.8.5"
       annotations:
         opendatahub.io/notebook-python-dependencies: "[]"
         opendatahub.io/notebook-software: "[]"
