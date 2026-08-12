@@ -69,14 +69,14 @@ aiLifecoach:
 
 rag:
   seedDocuments:
-    - filename: strong-compliance-culture.txt
-      url: https://crosscheckcompliance.com/resources/articles/strong-compliance-culture/
-    - filename: understanding-employment-laws.txt
-      url: https://www.eeoc.gov/laws/guidance/questions-and-answers-clarify-and-provide-common-interpretation-uniform-guidelines
-    - filename: anti-harassment-training-guide.txt
-      url: https://compliancy-group.com/anti-harassment-training-guide/
-    - filename: hr-compliance-financial-services.txt
+    - filename: harassment-guidance.txt
       url: https://www.eeoc.gov/harassment
+    - filename: employment-laws-guidance.txt
+      url: https://www.eeoc.gov/laws/guidance/questions-and-answers-clarify-and-provide-common-interpretation-uniform-guidelines
+    - filename: small-business-hr.txt
+      url: https://www.eeoc.gov/employers/small-business
+    - filename: retaliation-guidance.txt
+      url: https://www.eeoc.gov/retaliation
 
 pvc:
   size: 5Gi
