@@ -9,8 +9,8 @@ spec:
     app: anythingllm
   ports:
     - name: http
-      port: 8888
-      targetPort: 8888
+      port: 3001
+      targetPort: 3001
 ---
 apiVersion: route.openshift.io/v1
 kind: Route
