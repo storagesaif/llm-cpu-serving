@@ -250,29 +250,3 @@ spec:
             name: workbench-trusted-ca-bundle
             optional: true
           name: trusted-ca
----
-apiVersion: image.openshift.io/v1
-kind: ImageStream
-metadata:
-  name: anythingllm-workbench
-  namespace: {{ .Release.Namespace }}
-  labels:
-    opendatahub.io/notebook-image: "true"
-  annotations:
-    opendatahub.io/notebook-image-desc: "AnythingLLM workbench for HR Assistant"
-    opendatahub.io/notebook-image-name: "AnythingLLM"
-    opendatahub.io/notebook-image-url: "{{ .Values.images.anythingllm }}"
-    opendatahub.io/notebook-image-order: "1"
-spec:
-  lookupPolicy:
-    local: true
-  tags:
-    - name: "1.8.5"
-      annotations:
-        opendatahub.io/notebook-python-dependencies: "[]"
-        opendatahub.io/notebook-software: "[]"
-      from:
-        kind: DockerImage
-        name: "{{ .Values.images.anythingllm }}"
-      referencePolicy:
-        type: Source
