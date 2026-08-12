@@ -1,29 +1,15 @@
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: anythingllm-direct
-  namespace: {{ .Release.Namespace }}
-spec:
-  selector:
-    app: anythingllm
-  ports:
-    - name: http
-      port: 8888
-      targetPort: 8888
----
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   name: anythingllm
   namespace: {{ .Release.Namespace }}
 spec:
-  path: /notebook/hr-assistant/anythingllm/
   to:
     kind: Service
-    name: anythingllm-direct
+    name: anythingllm-kube-rbac-proxy
   port:
-    targetPort: http
+    targetPort: 8443
   tls:
-    termination: edge
+    termination: reencrypt
     insecureEdgeTerminationPolicy: Redirect
